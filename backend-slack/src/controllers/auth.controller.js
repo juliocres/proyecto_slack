@@ -98,6 +98,7 @@ Los JWT son objetos de JS (JSON) pasados a string (HS256) con una firma
 
 
 export async function login(request, response) {
+    console.log("[LOGIN]", request.body)  
     const { email, password } = request.body;
     if (
         !email || !password || typeof email !== "string" || typeof password !== "string"
@@ -119,6 +120,7 @@ export async function login(request, response) {
     const user = await user_repository.getByEmail(email)
 
     if (!user) {
+        console.log("1");
         throw new ServerError(
             "Invalid email or password",
             401
@@ -128,6 +130,7 @@ export async function login(request, response) {
     //Compara el hash guardado en DB contra la contraseña que nos envió por body el cliente.
     const isPasswordValid = await compareHash(password, user.password); 
     if (!isPasswordValid) {
+        console.log("2");
         throw new ServerError(
             "Invalid email or password",
             401
@@ -172,7 +175,7 @@ export async function verifyEmail (request, response){
     //Verificar el token
     const {email} = jwt.verify(
         verify_email_token,
-        ENVIRONMENT.JWT_SECRET_KEY
+        ENVIRONMENT.JWT_SECRET
     )
 
     const user_found = await user_repository.getByEmail(email)
