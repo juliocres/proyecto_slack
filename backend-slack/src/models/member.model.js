@@ -27,6 +27,15 @@ const member_schema = new mongoose.Schema(
         activo: {
             type: mongoose.Schema.Types.Boolean,
             default: false
+        },
+        /*
+        Indica si el miembro ya acepto la invitacion al workspace.
+        Los miembros creados directamente (ej: el owner) nacen aceptados,
+        los invitados por mail nacen con false hasta que acepten.
+        */
+        invitacion_aceptada: {
+            type: mongoose.Schema.Types.Boolean,
+            default: true
         }
     }
 )

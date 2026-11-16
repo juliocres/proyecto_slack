@@ -12,6 +12,10 @@ class ChannelRepository {
         return result
     }
 
+    async getById(channel_id) {
+        return await Channel.findById(channel_id)
+    }
+
     async deleteById(channel_id) {
         const result = await Channel.findByIdAndDelete(channel_id)
         return result

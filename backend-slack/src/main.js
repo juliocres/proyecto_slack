@@ -7,6 +7,8 @@ import errorHandlerMiddleware from "./middlewares/error.middleware.js";
 import auth_router from "./routes/auth.router.js";
 import user_router from "./routes/user.router.js";
 import workspace_router from "./routes/workspace.router.js";
+import member_router from "./routes/member.router.js";
+import channel_router from "./routes/channels.router.js";
 import cors from 'cors'
 import ENVIRONMENT from "./config/environment.config.js";
 
@@ -37,6 +39,10 @@ app.use('/api/auth', auth_router)
 app.use('/api/users', user_router)
 
 app.use('/api/workspaces', workspace_router)
+
+app.use('/api/workspaces/:workspace_id/members', member_router)
+
+app.use('/api/workspaces/:workspace_id/channels', channel_router)
 
 app.use(
     errorHandlerMiddleware

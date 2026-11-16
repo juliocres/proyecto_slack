@@ -6,19 +6,38 @@ class MemberRepository {
             fk_id_usuario: userId,
             fk_id_espacio_trabajo: workspaceId,
             rol: role,
-            active: true
+            activo: true
 
         })
     }
 
+    //Crear una membresia que todavia no fue aceptada (el miembro fue invitado por mail)
+    async createInvitation(userId, workspaceId, role) {
+        return await Member.create({
+            fk_id_usuario: userId,
+            fk_id_espacio_trabajo: workspaceId,
+            rol: role,
+            activo: false,
+            invitacion_aceptada: false
+        })
+    }
+
+    async getById(memberId) {
+        return await Member.findById(memberId)
+    }
+
     async deleteById(memberId) {
         const result = await Member.findByIdAndDelete(memberId)
-        console.log(result)
+        return result
+    }
+
+    async updateById(memberId, update_data) {
+        return await Member.findByIdAndUpdate(memberId, update_data, { new: true })
     }
 
     async updateRoleById(memberId, role) {
         const result = await Member.findByIdAndUpdate(memberId, { rol: role })
-        console.log(result)
+        return result
     }
 
 
@@ -56,12 +75,33 @@ class MemberRepository {
         )
     }
 
+    /*
+    formato:
+        {
+            member_id,
+            nombre,
+            email,
+            member_rol,
+            fecha_creacion
+        }
+    */
     //Traer todos miembros de un espacio de trabajo
     async getAllMembershipsByWorkspaceId(workspace_id){
         const result = await Member
         .find({fk_id_espacio_trabajo: workspace_id})
         .populate('fk_id_usuario', 'nombre email')
-        console.log(result)
+
+        return result.map(
+            membership => {
+                return {
+                    member_id: membership._id,
+                    nombre: membership.fk_id_usuario.nombre,
+                    email: membership.fk_id_usuario.email,
+                    member_rol: membership.rol,
+                    fecha_creacion: membership.fecha_creacion
+                }
+            }
+        )
     }
 
     async getMembershipByUserAndWorkspace (user_id, workspace_id){
