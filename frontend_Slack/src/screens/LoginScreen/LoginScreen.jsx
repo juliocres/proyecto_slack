@@ -1,96 +1,104 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router'
 import useForm from '../../hooks/useForm'
 import { login } from '../../services/authService'
 import useRequest from '../../hooks/useRequest'
-import {useNavigate} from 'react-router'
-import { useEffect } from 'react'
-
-/* 
-Siguiendo las practicas implementadas la conectar el formulario de login con nuesta API REST
-Desarrollar la implementacion del formulario de registro y la consulta a la API REST
-*/
+import FormField from '../../components/Form/FormField'
+import FormMessage from '../../components/Form/FormMessage'
+import SubmitButton from '../../components/Form/SubmitButton'
+import './LoginScreen.css'
 
 function LoginScreen() {
-    
-    const initial_state = {email: '', password: ''}
-    const {formState, handleChangeInput} = useForm(initial_state)
-    const {loading, response, error, sendRequest} = useRequest()
-    
-    const navigate = useNavigate()
-   
+  const initial_state = {email: '', password: ''}
+  const {formState, handleChangeInput} = useForm(initial_state)
+  const {loading, response, error, sendRequest} = useRequest()
 
-    async function handleSubmit (event){
-        event.preventDefault()
-        sendRequest(
-            () => login(formState.email, formState.password)
-        )
-        console.log('Usuario intenta iniciar sesion', formState)
-    }
+  const navigate = useNavigate()
 
-    /* 
-    Los efectos sirven para controlar la recarga/ejecucion de una funcion
-
-    Cuando la response cambie/llegue:
-        - Guardar en localstorage el auth_token (para que luego podamos seguir usandolo)
-        - voy a redireccionar a /home
-    */
-    useEffect(
-        () => {
-            if(response && response.data){
-                localStorage.setItem('auth_token', response.data.auth_token)
-                navigate('/')
-            }
-        },
-        [response]
+  async function handleSubmit (event){
+    event.preventDefault()
+    sendRequest(
+      () => login(formState.email, formState.password)
     )
+    console.log('Usuario intenta iniciar sesion', formState)
+  }
 
-    
-    
-    return (
-        <div>
-            <h1>Inciar sesion</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input 
-                        name='email' 
-                        id='email' 
-                        type='email' 
-                        value={formState.email} 
-                        onChange={handleChangeInput} 
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input 
-                        name='password' 
-                        id='password' 
-                        type='password' 
-                        value={formState.password} 
-                        onChange={handleChangeInput} 
-                    />
-                </div>
-                {
-                    error
-                    && 
-                    !loading 
-                    && 
-                    <span style={{color: 'red'}}>{error}</span>
-                }
+  /*
+  Los efectos sirven para controlar la recarga/ejecucion de una funcion
 
-                {
-                    loading
-                    ? <button type='submit' disabled={true} >Cargando...</button>
-                    : <button type='submit'>Iniciar sesion</button>
-                }
-                
+  Cuando la response cambie/llegue:
+      - Guardar en localstorage el auth_token (para que luego podamos seguir usandolo)
+      - voy a redireccionar a /home
+  */
+  useEffect(
+    () => {
+      if(response && response.data){
+        localStorage.setItem('auth_token', response.data.auth_token)
+        navigate('/')
+      }
+    },
+    [response]
+  )
 
-                {
-                    response && !loading && <span style={{color: 'greenyellow'}}>Inicio de sesion exitoso</span>
-                }
-            </form>
-        </div>
-    )
+  return (
+    <main className='login-page'>
+      <div className='login-card'>
+        <img
+          className='login-logo'
+          alt='Slack'
+          height='26'
+          title='Slack'
+          src='https://a.slack-edge.com/bv1-13/slack_logo-97f7334.svg'
+        />
+        <h1 className='login-title'>Iniciar sesión</h1>
+        <p className='login-subtitle'>Ingresa a tu cuenta para seguir usando la app</p>
+        <form className='login-form' onSubmit={handleSubmit}>
+          <FormField
+            label='Email:'
+            name='email'
+            id='email'
+            type='email'
+            value={formState.email}
+            onChange={handleChangeInput}
+          />
+          <FormField
+            label='Password:'
+            name='password'
+            id='password'
+            type='password'
+            value={formState.password}
+            onChange={handleChangeInput}
+          />
+          {
+            error
+            &&
+            !loading
+            &&
+            <FormMessage type='error'>{error}</FormMessage>
+          }
+
+          {
+            response
+            &&
+            !loading
+            &&
+            <FormMessage type='success'>Inicio de sesión exitoso</FormMessage>
+          }
+
+          <SubmitButton loading={loading}>Iniciar sesión</SubmitButton>
+        </form>
+        <p className='login-footer'>
+          ¿No tienes una cuenta? <Link to='/register'>Regístrate</Link>
+        </p>
+        <p className='login-footer'>
+          ¿No recibiste el mail de verificación? <Link to='/resend_email_verification'>Reenviar</Link>
+        </p>
+        <p className='login-footer'>
+          ¿Olvidaste tu contraseña? <Link to='/forgot-password'>Olvidé mi contraseña</Link>
+        </p>
+      </div>
+    </main>
+  )
 }
 
 export default LoginScreen

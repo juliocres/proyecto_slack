@@ -1,0 +1,75 @@
+/* ============================================
+   ResendEmailScreen: panel único centrado, fondo blanco
+   (mismo patrón visual que LoginScreen y RegisterScreen)
+   ============================================ */
+
+.resend-email-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 16px 48px;
+  background-color: var(--color-white);
+}
+
+.resend-email-card {
+  width: 100%;
+  max-width: 483px;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+}
+
+.resend-email-logo {
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.resend-email-title {
+  margin: 0;
+  font-size: 40px;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.resend-email-subtitle {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.resend-email-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.resend-email-footer {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: 18px;
+  color: var(--color-text-muted);
+}
+
+.resend-email-footer a {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.resend-email-footer a:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsive: dispositivos pequeños --- */
+@media (max-width: 400px) {
+  .resend-email-page {
+    padding: 24px 12px 40px;
+  }
+
+  .resend-email-title {
+    font-size: 28px;
+  }
+}

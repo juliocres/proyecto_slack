@@ -1,0 +1,74 @@
+/* ============================================
+   RegisterScreen: panel único centrado, fondo blanco
+   ============================================ */
+
+.register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 16px 48px;
+  background-color: var(--color-white);
+}
+
+.register-card {
+  width: 100%;
+  max-width: 483px; /* 420px ensanchado un 15% */
+  padding: 40px;
+  border-radius: var(--radius-lg);
+}
+
+.register-logo {
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.register-title {
+  margin: 0;
+  font-size: 48px;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.register-subtitle {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.register-footer {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: 18px;
+  color: var(--color-text-muted);
+}
+
+.register-footer a {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.register-footer a:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsive: dispositivos pequeños --- */
+@media (max-width: 400px) {
+  .register-page {
+    padding: 24px 12px 40px;
+  }
+
+  .register-title {
+    font-size: 32px; /* 48px es demasiado grande en móviles muy estrechos */
+  }
+}

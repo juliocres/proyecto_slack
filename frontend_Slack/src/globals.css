@@ -1,0 +1,50 @@
+/* ============================================
+   Variables y estilos globales de la aplicación
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..800&display=swap');
+
+:root {
+  /* Color principal (morado Slack-like) */
+  --color-primary: #491a54;
+  --color-primary-hover: #3a1443;
+  --color-primary-light: #f4ecf7;
+
+  /* Texto */
+  --color-text: #181818;
+  --color-text-muted: #616061;
+  --color-text-on-primary: #ffffff;
+
+  /* Fondos y bordes */
+  --color-bg: #f8f6f9;
+  --color-white: #ffffff;
+  --color-border: #d4d0d5;
+
+  /* Mensajes del servidor */
+  --color-error-bg: #fdecec;
+  --color-error-text: #c0223b;
+  --color-error-border: #f5c2c9;
+  --color-success-bg: #eaf7ee;
+  --color-success-text: #1a7f37;
+  --color-success-border: #bfe6c9;
+
+  /* Radios y sombras */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: 0 4px 20px rgba(29, 28, 29, 0.12);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}

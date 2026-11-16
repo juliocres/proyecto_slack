@@ -1,0 +1,67 @@
+/* ============================================
+   VerifyEmailScreen: panel único centrado, mismo estilo que RegisterScreen
+   ============================================ */
+
+.verify-email-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 16px 48px;
+  background-color: var(--color-white);
+}
+
+.verify-email-card {
+  width: 100%;
+  max-width: 483px;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+}
+
+.verify-email-logo {
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.verify-email-title {
+  margin: 0;
+  font-size: 40px;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.verify-email-message {
+  margin: 20px 0 0;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.verify-email-footer {
+  margin: 28px 0 0;
+  text-align: center;
+  font-size: 16px;
+  color: var(--color-text-muted);
+}
+
+.verify-email-footer a {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.verify-email-footer a:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsive: dispositivos pequeños --- */
+@media (max-width: 400px) {
+  .verify-email-page {
+    padding: 24px 12px 40px;
+  }
+
+  .verify-email-title {
+    font-size: 28px;
+  }
+}

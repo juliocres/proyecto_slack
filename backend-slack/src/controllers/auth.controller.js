@@ -1,13 +1,7 @@
-import ENVIRONMENT from "../config/environment.config.js"
-import mailer_transporter from "../config/mailer.config.js"
-import user_repository from "../repositories/user.repository.js"
-import { compareHash, generateHash } from "../utils/bcrypt.util.js"
-import ServerError from "../utils/error.util.js"
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import { registerUser, loginUser, verifyUserEmail, resendUserVerificationEmail, sendUserPasswordResetEmail, resetUserPassword } from '../services/auth.services.js'
 
 
-/* 
+/*
 Para enviar en una request HTTP info a una API usamos el body
 
 Las consultas (request) tipo GET NO TIENEN body
@@ -15,69 +9,18 @@ El body puede ser de distintos tipos de dato:
     Hoy vamos a usar JSON, para poder usar JSON nuestra API debe estar preparada para recibir ese tipo de informacion
 */
 
+/*
+Los controllers son una capa delgada: solo manejan HTTP.
+Extraen los datos del request, delegan la logica de negocio al service
+correspondiente y arman la response con el status code apropiado.
+*/
+
 export async function register(request, response) {
 
     console.log("[REGISTER]", request.body)
     const { username, email, password } = request.body
 
-    if (!username || !email || !password) {
-        throw new ServerError(
-            "Email, password and username is required",
-            400
-        )
-    }
-
-    if (!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
-        throw new ServerError(
-            "Email is incorrect",
-            400
-        )
-    }
-
-    //Validar si el mail ya esta registrado
-    const user_already_exist = await user_repository.getByEmail(email)
-    if (user_already_exist) {
-        throw new ServerError(
-            'Email is already used',
-            400
-        )
-    }
-
-    /* 
-    Encriptamos la password para que en DB se guarde un dato irreversible 
-    Viendo el dato irreversible es IMPROBABLE que se sepa el dato original
-    */
-    const password_hash = await generateHash(password)
-
-    await user_repository.create(username, email, password_hash)
-
-
-    const verify_email_token = jwt.sign(
-        {
-            email: email
-        },
-        ENVIRONMENT.JWT_SECRET,
-        {
-            expiresIn: '7d' // -> expira en 7 dias
-        }
-    )
-
-    await mailer_transporter.sendMail(
-        {
-            to: email,
-            from: ENVIRONMENT.GMAIL_USER,
-            subject: "Verifica tu cuenta",
-            html: `
-                <body>
-                    <h1>Bienvenido a nuestra plataforma</h1>
-                    <p>Necesitamos verificar este correo electronico</p>
-                    <a href='${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email/${verify_email_token}'>
-                    Click aqui para verifcar tu cuenta
-                    </a>
-                </body>
-            `
-        }
-    )
+    await registerUser({ username, email, password })
 
     return response.status(201).send({
         ok: true,
@@ -86,78 +29,15 @@ export async function register(request, response) {
     })
 }
 
-
-/* 
-Cuando un usuario inicia sesion debemos darle una credencial firmada que nos permita indicar quien es ese usuario para que mas adelante el usuario nos devuelva dicha credencial y poder confiar en ella
-
-Para poder crear esta credencial firmada usamos JWT (JsonWebTokens)
-Los JWT son objetos de JS (JSON) pasados a string (HS256) con una firma
-
-
+/*
+Cuando un usuario inicia sesion el service valida las credenciales,
+verifica que el email este confirmado y crea el token de acceso
 */
-
-
 export async function login(request, response) {
-    console.log("[LOGIN]", request.body)  
+    console.log("[LOGIN]", request.body)
     const { email, password } = request.body;
-    if (
-        !email || !password || typeof email !== "string" || typeof password !== "string"
-    ) {
-        throw new ServerError(
-            "Email and password are required",
-            400
-        );
-    }
 
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { 
-        throw new ServerError(
-            "Email is incorrect",
-            400
-        );
-    }
-
-    const user = await user_repository.getByEmail(email)
-
-    if (!user) {
-        console.log("1");
-        throw new ServerError(
-            "Invalid email or password",
-            401
-        );
-    }
-
-    //Compara el hash guardado en DB contra la contraseña que nos envió por body el cliente.
-    const isPasswordValid = await compareHash(password, user.password); 
-    if (!isPasswordValid) {
-        console.log("2");
-        throw new ServerError(
-            "Invalid email or password",
-            401
-        );
-    }
-
-
-    if(!user.email_verificado){
-        throw new ServerError(
-            'Email no verificado',
-            403
-        )
-    }
-
-
-    /* Crear un token firmado de sesion */
-
-    const auth_token = jwt.sign(
-        {
-            //Aca va a info que queres guardar en la credencial
-            id: user._id,
-            name: user.nombre,
-            email: user.email
-        },
-        ENVIRONMENT.JWT_SECRET //Firmamos con esto
-    )
-
+    const auth_token = await loginUser({ email, password })
 
     return response.status(200).send({
         ok: true,
@@ -171,42 +51,76 @@ export async function login(request, response) {
 
 
 export async function verifyEmail (request, response){
-    const {verify_email_token} = request.params
-    //Verificar el token
-    const {email} = jwt.verify(
-        verify_email_token,
-        ENVIRONMENT.JWT_SECRET
-    )
+    //El token viene por querystring: /verify-email?verification_token=xxxx
+    const { verification_token } = request.query
 
-    const user_found = await user_repository.getByEmail(email)
-
-    //Si no existe el usuario error
-    if(!user_found){
-        throw new ServerError('Usuario no encontrado', 404)
-    }
-
-    if(!user_found.activo){
-        throw new ServerError('Usuario esta desactivado de la plataforma, contactate con soporte si consideras que esto es un error', 403)
-    }
-
-    //Si ya estas verificado deja de intentar verificarte
-    if(user_found.email_verificado){
-        throw new ServerError('Ya estas verificado', 400)
-    }
-
-    //Actualizamos al usuario para verificarlo
-    await user_repository.updateById(
-        user_found._id, 
-        {
-            email_verificado: true
-        }
-    )
+    await verifyUserEmail({ verification_token })
 
     return response.status(200).send(
         {
-            ok: true, 
+            ok: true,
             status: 200,
             message: 'Usuario verificado exitosamente'
+        }
+    )
+}
+
+/*
+Reenvio del mail de verificacion con un token nuevo.
+El service devuelve un mensaje ambiguo a proposito (no revela si el
+email existe o ya esta verificado, para evitar email enumeration)
+*/
+export async function resendVerificationEmail(request, response){
+    const { email } = request.params
+
+    const message = await resendUserVerificationEmail({ email })
+
+    return response.status(200).send(
+        {
+            ok: true,
+            status: 200,
+            message
+        }
+    )
+}
+
+/*
+Solicitud de restablecimiento de contraseña.
+El service devuelve un mensaje ambiguo a proposito (no revela si el
+email existe, para evitar email enumeration)
+*/
+export async function forgotPassword(request, response){
+    console.log("[FORGOT PASSWORD]", request.body)
+    const { email } = request.body
+
+    const message = await sendUserPasswordResetEmail({ email })
+
+    return response.status(200).send(
+        {
+            ok: true,
+            status: 200,
+            message
+        }
+    )
+}
+
+/*
+Restablecimiento de contraseña.
+El cliente envia el token (que recibio por mail), el email y la nueva password.
+El service verifica que el token sea valido y que el email coincida con el
+firmado en el token antes de actualizar la contraseña.
+*/
+export async function resetPassword(request, response){
+    console.log("[RESET PASSWORD]", request.body)
+    const { reset_token, email, nueva_password } = request.body
+
+    await resetUserPassword({ reset_token, email, nueva_password })
+
+    return response.status(200).send(
+        {
+            ok: true,
+            status: 200,
+            message: 'Contraseña restablecida exitosamente'
         }
     )
 }
