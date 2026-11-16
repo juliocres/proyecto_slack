@@ -3,9 +3,9 @@ import { Link } from 'react-router'
 import useForm from '../../hooks/useForm'
 import { forgotPassword } from '../../services/authService'
 import useRequest from '../../hooks/useRequest'
-import FormField from '../../components/Form/FormField'
-import FormMessage from '../../components/Form/FormMessage'
-import SubmitButton from '../../components/Form/SubmitButton'
+import FormField from '../../Components/Form/FormField'
+import FormMessage from '../../Components/Form/FormMessage'
+import SubmitButton from '../../Components/Form/SubmitButton'
 import './ForgotPasswordScreen.css'
 
 function ForgotPasswordScreen() {

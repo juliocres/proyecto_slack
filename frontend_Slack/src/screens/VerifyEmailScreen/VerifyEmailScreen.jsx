@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { verifyEmail } from '../../services/authService'
 import useRequest from '../../hooks/useRequest'
-import FormMessage from '../../components/Form/FormMessage'
+import FormMessage from '../../Components/Form/FormMessage'
 import './VerifyEmailScreen.css'
 
 function VerifyEmailScreen() {
