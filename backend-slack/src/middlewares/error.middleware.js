@@ -19,11 +19,13 @@ function errorHandlerMiddleware(error, request, response, next) {
     else {
         console.log('[Middleware de Error]:', error)
         //Error generico
+        console.error("ERROR REAL:", err);
         return response.status(500).send(
             {
                 ok: false,
                 status: 500,
-                message: 'Internal server error'
+                message: 'Internal server error',
+                detail: error.message
             }
         )
     }
