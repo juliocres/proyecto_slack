@@ -2,13 +2,18 @@ import Member from "../models/member.model.js"
 
 class MemberRepository {
     async create(userId, workspaceId, role) {
-        return await Member.create({
+        const member_created = await Member.create({
             fk_id_usuario: userId,
             fk_id_espacio_trabajo: workspaceId,
             rol: role,
             activo: true
 
         })
+
+        //Populamos el usuario para que la respuesta incluya su nombre y email (ademas del rol)
+        await member_created.populate('fk_id_usuario', 'nombre email')
+
+        return member_created
     }
 
     //Crear una membresia que todavia no fue aceptada (el miembro fue invitado por mail)
