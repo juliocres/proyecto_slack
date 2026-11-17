@@ -48,12 +48,21 @@ app.use(
     errorHandlerMiddleware
 )
 
-app.listen(
-    PORT,
-    () => {
-        console.log(
-            `El servidor se esta escuchando correctamente en http://localhost:${PORT}`
-        )
-    }
-)
+/*
+En Vercel (serverless) NO se usa un servidor escuchando en un puerto: @vercel/node
+toma el export por defecto de este archivo y lo usa como handler de la funcion.
+Por eso solo hacemos app.listen() cuando NO estamos en Vercel (ej: en local).
+*/
+export default app
+
+if (!process.env.VERCEL) {
+    app.listen(
+        PORT,
+        () => {
+            console.log(
+                `El servidor se esta escuchando correctamente en http://localhost:${PORT}`
+            )
+        }
+    )
+}
 
