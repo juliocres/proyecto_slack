@@ -67,7 +67,11 @@ class MemberRepository {
             'nombre fecha_creacion'
         )
 
-        return result.map(
+        //Descartamos membresias huerfanas (membresias cuyo workspace ya no existe,
+        //el populate de un id inexistente devuelve null)
+        return result
+        .filter(membership => membership.fk_id_espacio_trabajo)
+        .map(
             membership => {
                 return {
                     member_id: membership._id,
@@ -96,7 +100,11 @@ class MemberRepository {
         .find({fk_id_espacio_trabajo: workspace_id})
         .populate('fk_id_usuario', 'nombre email')
 
-        return result.map(
+        //Descartamos membresias huerfanas (membresias cuyo usuario ya no existe,
+        //el populate de un id inexistente devuelve null)
+        return result
+        .filter(membership => membership.fk_id_usuario)
+        .map(
             membership => {
                 return {
                     member_id: membership._id,
