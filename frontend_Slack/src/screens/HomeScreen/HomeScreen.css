@@ -1,0 +1,271 @@
+/* ============================================
+   Pantalla de inicio (Home)
+   Diseño inspirado en la página de inicio de Slack
+   ============================================ */
+
+.home-screen {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* --- Hero morado con curva inferior --- */
+.home-hero {
+  position: relative;
+  z-index: 0;
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+  text-align: center;
+  padding: 72px 24px 250px;
+  border-radius: 0 0 50% 50% / 0 0 90px 90px;
+}
+
+.home-hero-title {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.home-hero-wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: home-wave 2.4s ease-in-out 1s infinite;
+}
+
+@keyframes home-wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  10%, 30% { transform: rotate(16deg); }
+  20%, 40% { transform: rotate(-8deg); }
+}
+
+.home-hero-subtitle {
+  margin: 10px 0 0;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+/* --- Contenido principal (dos columnas) --- */
+.home-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: -190px auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+/* Encabezados de sección ("Mis espacios de trabajo", "Descubre más") */
+.home-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 22px;
+  color: var(--color-text-on-primary);
+}
+
+.home-discover .home-section-label {
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+
+/* --- Tarjetas promocionales (columna derecha) --- */
+/* El padding-top compensa la altura del encabezado de la columna izquierda
+   para que la promo de descuento quede a la misma altura que la tarjeta
+   de espacios de trabajo (22px de línea + 14px de margen = 36px). */
+.home-aside {
+  padding-top: 36px;
+}
+
+.promo-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+/* Promo de descuento: fondo lila claro con botón morado */
+.promo-card-discount {
+  background-color: #f7edfb;
+  border: 1px solid #e9d7f0;
+}
+
+.promo-card-discount h3 {
+  margin: 0 24px 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.promo-card-discount p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.promo-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  padding: 4px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.promo-close:hover {
+  color: var(--color-text);
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Promo de plantillas: tarjeta blanca con ilustración */
+.promo-card-templates {
+  margin-top: 16px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.promo-templates-info h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.promo-templates-info p {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.promo-illustration {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+/* Botones de las promos */
+.promo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.promo-button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+}
+
+.promo-button-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.promo-button-outline {
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.promo-button-outline:hover {
+  border-color: var(--color-text-muted);
+  background-color: #fafafa;
+}
+
+/* --- Sección "Descubre más" --- */
+.home-discover {
+  max-width: 1080px;
+  margin: 56px auto 72px;
+  padding: 0 24px;
+}
+
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.discover-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.discover-card:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+}
+
+.discover-card-icon {
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.discover-card-title {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.discover-card-text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .home-hero {
+    padding-top: 48px;
+    padding-bottom: 200px;
+  }
+
+  .home-hero-title {
+    font-size: 30px;
+  }
+
+  .home-content {
+    grid-template-columns: 1fr;
+    margin-top: -160px;
+    gap: 32px;
+  }
+
+  /* En mobile las columnas se apilan: ya no hace falta alinear */
+  .home-aside {
+    padding-top: 0;
+  }
+
+  .discover-grid {
+    grid-template-columns: 1fr;
+  }
+}

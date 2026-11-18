@@ -14,6 +14,7 @@
   --color-text: #181818;
   --color-text-muted: #616061;
   --color-text-on-primary: #ffffff;
+  --color-link: #1264a3; /* azul Slack (hover en filas, links) */
 
   /* Fondos y bordes */
   --color-bg: #f8f6f9;

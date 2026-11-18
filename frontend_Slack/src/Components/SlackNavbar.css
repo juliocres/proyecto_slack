@@ -1,0 +1,119 @@
+/* ============================================
+   Barra de navegación estilo Slack (marketing)
+   ============================================ */
+
+.slack-navbar {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+}
+
+/* Contenido alineado con el resto de la página
+   (mismo ancho máximo y padding que el home) */
+.slack-navbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+
+/* --- Logo --- */
+.slack-navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-on-primary);
+  text-decoration: none;
+}
+
+.slack-navbar-wordmark {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.slack-navbar-from {
+  align-self: flex-end;
+  padding-bottom: 2px;
+  font-size: 9px;
+  line-height: 1.1;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* --- Links centrales --- */
+.slack-navbar-links {
+  display: flex;
+  gap: 26px;
+  flex: 1;
+}
+
+.slack-navbar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-on-primary);
+  text-decoration: none;
+  opacity: 0.95;
+}
+
+.slack-navbar-link:hover {
+  opacity: 0.7;
+}
+
+/* --- Acciones (botones a la derecha) --- */
+.slack-navbar-actions {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.slack-navbar-actions button {
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+}
+
+.slack-navbar-btn-outline {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: var(--color-text-on-primary);
+}
+
+.slack-navbar-btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.slack-navbar-btn-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-white);
+  color: var(--color-primary);
+}
+
+.slack-navbar-btn-white:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .slack-navbar-inner {
+    gap: 16px;
+    padding: 12px 20px;
+  }
+
+  .slack-navbar-links,
+  .slack-navbar-from {
+    display: none;
+  }
+}
