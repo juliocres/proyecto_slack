@@ -144,6 +144,10 @@
   animation: spinner-rotate 0.7s linear infinite;
 }
 
+.spinner--hidden {
+  display: none;
+}
+
 @keyframes spinner-rotate {
   to {
     transform: rotate(360deg);

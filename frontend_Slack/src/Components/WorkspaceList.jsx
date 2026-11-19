@@ -52,8 +52,11 @@ export default function WorkspaceList() {
         reloadWorkspaces
     } = useWorkspaceList()
 
+    //Validamos el formato antes de renderizar para no romper la pantalla
+    //si el servidor devuelve una respuesta inesperada
+    const workspaces = workspaces_response?.data?.workspaces
 
-    if (workspaces_loading) {
+    if (workspaces_loading || (!workspaces_response && !workspaces_error)) {
         return (
             <div className="workspace-card">
                 <div className="workspace-card-body">
@@ -62,7 +65,7 @@ export default function WorkspaceList() {
             </div>
         )
     }
-    else if (workspaces_error || !workspaces_response) {
+    else if (workspaces_error || !Array.isArray(workspaces)) {
         return (
             <div className="workspace-card">
                 <div className="workspace-card-body">
@@ -78,7 +81,7 @@ export default function WorkspaceList() {
             </div>
         )
     }
-    else if (workspaces_response.data.workspaces.length === 0) {
+    else if (workspaces.length === 0) {
         return (
             <div className="workspace-card">
                 <header className="workspace-card-header">
@@ -101,8 +104,8 @@ export default function WorkspaceList() {
                     <h3 className="workspace-section-title">Listo para comenzar</h3>
 
                     <ul className="workspace-items">
-                        {workspaces_response.data.workspaces.map((workspace) => {
-                            const members = workspace.members || []
+                        {workspaces.map((workspace) => {
+                            const members = Array.isArray(workspace.members) ? workspace.members : []
                             return (
                                 <li key={workspace.workspace_id}>
                                     <Link

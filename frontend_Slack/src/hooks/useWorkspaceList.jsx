@@ -14,6 +14,16 @@ function useWorkspaceList() {
     },
     []
     )
+
+    //Estado de la API por consola para poder diagnosticar problemas
+    useEffect(
+    () => {
+        console.log('[useWorkspaceList] loading:', loading)
+        console.log('[useWorkspaceList] error:', error)
+        console.log('[useWorkspaceList] response:', response)
+    },
+    [loading, error, response]
+    )
     function reloadWorkspaces(){
         sendRequest(
             () => getAllWorkspaces()

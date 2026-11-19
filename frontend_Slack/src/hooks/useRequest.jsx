@@ -19,6 +19,7 @@ function useRequest (){
             setError(null)
         }
         catch(error){
+            console.error('[useRequest]', error)
             setResponse(null)
             setError(error.message)
         }
