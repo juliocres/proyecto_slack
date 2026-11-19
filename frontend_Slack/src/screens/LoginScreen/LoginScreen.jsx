@@ -28,16 +28,17 @@ function LoginScreen() {
 
   Cuando la response cambie/llegue:
       - Guardar en localstorage el auth_token (para que luego podamos seguir usandolo)
-      - voy a redireccionar a /home
+      - voy a redireccionar a la homescreen (/)
   */
   useEffect(
     () => {
       if(response && response.data){
         localStorage.setItem('auth_token', response.data.auth_token)
-        navigate('/')
+        // replace: evita que "atras" vuelva al formulario de login
+        navigate('/', { replace: true })
       }
     },
-    [response]
+    [response, navigate]
   )
 
   return (
