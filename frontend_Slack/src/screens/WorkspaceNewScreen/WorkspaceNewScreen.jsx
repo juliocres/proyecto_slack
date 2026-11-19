@@ -32,8 +32,8 @@ function WorkspaceNewScreen() {
   */
   useEffect(
     () => {
-      if (response && response.data) {
-        navigate('/')
+      if (response) {
+        navigate('/', { replace: true })
       }
     },
     [response]

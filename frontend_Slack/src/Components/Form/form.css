@@ -44,11 +44,38 @@
   resize: vertical;
 }
 
-/* Contador de caracteres (cuando el campo tiene maxLength) */
+/* --- Contenedor del input/textarea (permite el contador dentro) --- */
+.form-input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Espacio a la derecha/abajo para que el texto no quede bajo el contador */
+.form-input--with-counter {
+  padding-right: 74px;
+}
+
+.form-textarea--with-counter {
+  padding-bottom: 30px;
+}
+
+/* Contador de caracteres dentro del campo (estilo Slack) */
 .form-field-counter {
-  align-self: flex-end;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 13px;
+  font-variant-numeric: tabular-nums;
   color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.form-input-wrapper--textarea .form-field-counter {
+  top: auto;
+  bottom: 8px;
+  transform: none;
 }
 
 .form-field-counter--limit {

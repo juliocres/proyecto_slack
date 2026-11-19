@@ -14,6 +14,7 @@ function FormField({
   required = false,
 }) {
   const currentLength = String(value ?? '').length
+  const hasCounter = Boolean(maxLength)
   const inputProps = {
     name,
     id,
@@ -30,23 +31,29 @@ function FormField({
         {label}
       </label>
 
-      {multiline ? (
-        <textarea
-          {...inputProps}
-          className='form-input form-textarea'
-          rows={rows}
-        />
-      ) : (
-        <input {...inputProps} className='form-input' type={type} />
-      )}
+      <div className={`form-input-wrapper${multiline ? ' form-input-wrapper--textarea' : ''}`}>
+        {multiline ? (
+          <textarea
+            {...inputProps}
+            className={`form-input form-textarea${hasCounter ? ' form-textarea--with-counter' : ''}`}
+            rows={rows}
+          />
+        ) : (
+          <input
+            {...inputProps}
+            className={`form-input${hasCounter ? ' form-input--with-counter' : ''}`}
+            type={type}
+          />
+        )}
 
-      {maxLength && (
-        <span
-          className={`form-field-counter${currentLength >= maxLength ? ' form-field-counter--limit' : ''}`}
-        >
-          {currentLength}/{maxLength}
-        </span>
-      )}
+        {hasCounter && (
+          <span
+            className={`form-field-counter${currentLength >= maxLength ? ' form-field-counter--limit' : ''}`}
+          >
+            {currentLength}/{maxLength}
+          </span>
+        )}
+      </div>
     </div>
   )
 }
