@@ -1,4 +1,4 @@
-import { getUsers as getUsersService, getUserById as getUserByIdService } from '../services/user.services.js'
+import { getUsers as getUsersService, getUserById as getUserByIdService, deleteUserById as deleteUserByIdService } from '../services/user.services.js'
 
 /*
 Los controllers son una capa delgada: solo manejan HTTP.
@@ -31,6 +31,30 @@ export async function getUserById(request, response) {
             data: {
                 user: user_found
             }
+        }
+    )
+}
+
+/*
+(Authentified) DELETE /api/users/:user_id
+Solo permite eliminar la propia cuenta. El borrado es ordenado:
+membresias -> workspaces donde es owner -> usuario.
+*/
+export async function deleteUser(request, response) {
+
+    const { user_id } = request.params
+
+    const delete_summary = await deleteUserByIdService({
+        user_id,
+        requester_id: request.user.id
+    })
+
+    return response.status(200).send(
+        {
+            ok: true,
+            message: "Usuario eliminado correctamente",
+            status: 200,
+            data: delete_summary
         }
     )
 }

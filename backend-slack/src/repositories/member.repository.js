@@ -121,6 +121,11 @@ class MemberRepository {
         return await Member.findOne({fk_id_usuario:user_id, fk_id_espacio_trabajo: workspace_id })
     }
 
+    //Traer las membresias (documentos crudos) de un usuario, para operaciones de borrado
+    async getMembershipsByUserId(user_id){
+        return await Member.find({fk_id_usuario: user_id})
+    }
+
 
     //Borrar las membresias de un espacio de trabajo
     async deleteAllMembershipsByWorkspaceId(workspace_id){

@@ -133,7 +133,7 @@ class UserRepository {
 
     async deleteById (user_id){
         const result = await User.findByIdAndDelete(user_id)
-        console.log(result)
+        return result
     }
     
     async  getByEmail (email){
