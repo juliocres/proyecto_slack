@@ -151,7 +151,7 @@ export default function WorkspaceList() {
                 </div>
 
                 <footer className="workspace-card-footer">
-                    <a href="#" className="workspace-footer-link">Crea un nuevo espacio de trabajo</a>
+                    <Link to="/workspaces/new" className="workspace-footer-link">Crea un nuevo espacio de trabajo</Link>
                     <p className="workspace-footer-help">
                         ¿No puedes ver tu espacio de trabajo?{" "}
                         <a href="#" className="workspace-footer-link">Prueba con otro correo electrónico</a>

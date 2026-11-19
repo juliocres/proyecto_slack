@@ -4,12 +4,12 @@ const workspaceSchema = new mongoose.Schema(
         nombre:{
             type: String,
             required: true,
-            maxlength: 30,
+            maxlength: 50,
             trim: true
         },
         description: {
             type: String,
-            maxlength: 200,
+            maxlength: 1000,
             trim: true   
         },
         fecha_creacion: {

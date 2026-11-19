@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router'
 import HomeScreeen from './screens/HomeScreen/HomeScreeen'
+import WorkspaceNewScreen from './screens/WorkspaceNewScreen/WorkspaceNewScreen'
 import LoginScreen from './screens/LoginScreen/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 import VerifyEmailScreen from './screens/VerifyEmailScreen/VerifyEmailScreen'
@@ -17,6 +18,8 @@ const App = () => {
         <Route path='/' element={<HomeScreeen/>}/>
 
         <Route path='/home' element={<HomeScreeen/>}/>
+
+        <Route path='/workspaces/new' element={<WorkspaceNewScreen/>}/>
 
       </Route>
         <Route path='/login' element={<LoginScreen/>}/>

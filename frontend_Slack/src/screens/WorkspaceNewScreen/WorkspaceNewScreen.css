@@ -1,0 +1,81 @@
+/* ============================================
+   WorkspaceNewScreen: crear un espacio de trabajo
+   Reutiliza el lenguaje visual del registro
+   (panel único centrado, fondo blanco)
+   ============================================ */
+
+.workspace-new-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 16px 48px;
+  background-color: var(--color-white);
+}
+
+.workspace-new-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+}
+
+.workspace-new-logo {
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.workspace-new-title {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.workspace-new-subtitle {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.workspace-new-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.workspace-new-footer {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: 16px;
+  color: var(--color-text-muted);
+}
+
+.workspace-new-footer a {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.workspace-new-footer a:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsive: dispositivos pequeños --- */
+@media (max-width: 520px) {
+  .workspace-new-page {
+    padding: 24px 12px 40px;
+  }
+
+  .workspace-new-card {
+    padding: 24px;
+  }
+
+  .workspace-new-title {
+    font-size: 26px;
+  }
+}

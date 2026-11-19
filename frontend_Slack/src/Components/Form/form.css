@@ -35,6 +35,26 @@
   box-shadow: 0 0 0 3px rgba(73, 26, 84, 0.15);
 }
 
+/* Textarea (descripciones, mensajes largos) */
+.form-textarea {
+  height: auto;
+  min-height: 120px;
+  padding: 10px 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* Contador de caracteres (cuando el campo tiene maxLength) */
+.form-field-counter {
+  align-self: flex-end;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.form-field-counter--limit {
+  color: var(--color-error-text);
+}
+
 /* --- FormMessage: alertas de mensajes del servidor --- */
 .form-message {
   padding: 10px 14px;
