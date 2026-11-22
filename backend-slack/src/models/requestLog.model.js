@@ -13,6 +13,15 @@ const requestLogSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        /*
+        User-Agent del cliente (navegador, Postman, curl, etc.).
+        Es null si la request no lo envio. Se guarda recortado a 512 caracteres.
+        */
+        user_agent: {
+            type: String,
+            maxlength: 512,
+            default: null
+        },
         url: {
             type: String,
             required: true

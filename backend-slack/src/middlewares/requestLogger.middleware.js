@@ -59,6 +59,25 @@ function getClientIp(request) {
 }
 
 /*
+Maximo de caracteres que se guardan del User-Agent (evita strings enormes).
+*/
+const MAX_USER_AGENT_LENGTH = 512
+
+/*
+Obtiene el User-Agent del cliente (navegador, Postman, curl, etc.).
+Devuelve null si la request no lo envio.
+*/
+function getUserAgent(request) {
+    const user_agent = request.headers['user-agent']
+
+    if (!user_agent || typeof user_agent !== 'string') {
+        return null
+    }
+
+    return user_agent.slice(0, MAX_USER_AGENT_LENGTH)
+}
+
+/*
 Redacta los valores sensibles del query string sin modificar el resto de la URL.
 */
 function redactSensitiveParams(url) {
@@ -177,6 +196,7 @@ function requestLoggerMiddleware(request, response, next) {
     response.on('finish', () => {
         const log_data = {
             ip: getClientIp(request),
+            user_agent: getUserAgent(request),
             url: redactSensitiveParams(request.originalUrl),
             endpoint: request.originalUrl.split('?')[0],
             metodo: request.method,
@@ -188,7 +208,7 @@ function requestLoggerMiddleware(request, response, next) {
         }
 
         console.log(
-            `[REQUEST] ${log_data.metodo} ${log_data.url} ${log_data.status_code} ${log_data.duracion_ms}ms ip=${log_data.ip} user=${log_data.user_id ?? 'anonimo'} body=${log_data.body_cifrado ? 'cifrado' : '-'}`
+            `[REQUEST] ${log_data.metodo} ${log_data.url} ${log_data.status_code} ${log_data.duracion_ms}ms ip=${log_data.ip} user=${log_data.user_id ?? 'anonimo'} ua=${log_data.user_agent ? log_data.user_agent.slice(0, 40) : '-'} body=${log_data.body_cifrado ? 'cifrado' : '-'}`
         )
 
         /*
