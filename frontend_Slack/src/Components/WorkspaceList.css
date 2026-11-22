@@ -225,6 +225,55 @@
   color: var(--color-text-muted);
 }
 
+/* --- Estado vacío con opción de crear espacio de trabajo --- */
+.workspace-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 16px;
+  text-align: center;
+}
+
+.workspace-empty-icon {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.workspace-empty-text {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.workspace-empty-help {
+  margin: 0;
+  max-width: 360px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.workspace-create-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.workspace-create-button:hover {
+  background-color: var(--color-primary-hover);
+}
+
 /* Scrollbar similar al de Slack */
 .workspace-card-body::-webkit-scrollbar {
   width: 8px;

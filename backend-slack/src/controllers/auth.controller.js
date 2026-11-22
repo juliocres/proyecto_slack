@@ -17,7 +17,6 @@ correspondiente y arman la response con el status code apropiado.
 
 export async function register(request, response) {
 
-    console.log("[REGISTER]", request.body)
     const { username, email, password } = request.body
 
     await registerUser({ username, email, password })
@@ -34,7 +33,6 @@ Cuando un usuario inicia sesion el service valida las credenciales,
 verifica que el email este confirmado y crea el token de acceso
 */
 export async function login(request, response) {
-    console.log("[LOGIN]", request.body)
     const { email, password } = request.body;
 
     const auth_token = await loginUser({ email, password })
@@ -90,7 +88,6 @@ El service devuelve un mensaje ambiguo a proposito (no revela si el
 email existe, para evitar email enumeration)
 */
 export async function forgotPassword(request, response){
-    console.log("[FORGOT PASSWORD]", request.body)
     const { email } = request.body
 
     const message = await sendUserPasswordResetEmail({ email })
@@ -111,7 +108,6 @@ El service verifica que el token sea valido y que el email coincida con el
 firmado en el token antes de actualizar la contraseña.
 */
 export async function resetPassword(request, response){
-    console.log("[RESET PASSWORD]", request.body)
     const { reset_token, email, nueva_password } = request.body
 
     await resetUserPassword({ reset_token, email, nueva_password })

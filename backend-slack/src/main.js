@@ -11,16 +11,61 @@ import member_router from "./routes/member.router.js";
 import channel_router from "./routes/channels.router.js";
 import cors from 'cors'
 import ENVIRONMENT from "./config/environment.config.js";
+import swaggerUi from 'swagger-ui-express'
+import swagger_document from './docs/swagger.js'
+import requestLoggerMiddleware from './middlewares/requestLogger.middleware.js'
 
 
 const PORT = ENVIRONMENT.PORT
 
 const app = express()
 
+/*
+Confia en el proxy (Vercel, Nginx, etc.) para que request.ip devuelva la IP
+real del cliente y no la del proxy.
+*/
+app.set('trust proxy', true)
 
 app.use(cors())
 
+/*
+Logger de consultas: se monta antes de Swagger y de las rutas para registrar
+todas las peticiones que recibe el servidor (incluidas 404 y /api/docs).
+El body de POST, PUT y DELETE se guarda cifrado con LOGGER_PRIVATE_KEY, salvo
+en login, registro y restablecimiento de contraseña (ver requestLogger.middleware.js).
+*/
+app.use(requestLoggerMiddleware)
+
 app.use(express.json())
+
+/*
+Documentacion de la API (Swagger UI).
+
+IMPORTANTE: se monta ANTES del middleware que conecta a MongoDB para que la
+documentacion funcione aunque la base de datos este caida o lenta.
+*/
+app.use(
+    '/api/docs',
+    swaggerUi.serve,
+    swaggerUi.setup(
+        swagger_document,
+        {
+            customSiteTitle: 'Slack API - Documentacion',
+            swaggerOptions: {
+                persistAuthorization: true,
+                displayRequestDuration: true
+            }
+        }
+    )
+)
+
+//Especificacion OpenAPI cruda (util para Postman, Insomnia, Redoc, etc.)
+app.get(
+    '/api/docs.json',
+    (request, response) => {
+        return response.status(200).json(swagger_document)
+    }
+)
 
 app.use(async (req, res, next) => {
     try {

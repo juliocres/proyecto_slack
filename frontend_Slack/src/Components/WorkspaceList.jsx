@@ -88,8 +88,28 @@ export default function WorkspaceList() {
                     <span className="workspace-card-tab">Espacios de trabajo</span>
                 </header>
                 <div className="workspace-card-body">
-                    <p className="workspace-empty-text">Aún no creaste ningún espacio de trabajo</p>
+                    <div className="workspace-empty">
+                        <span className="workspace-empty-icon" aria-hidden="true">
+                            🚀
+                        </span>
+                        <p className="workspace-empty-text">
+                            Aún no creaste ningún espacio de trabajo
+                        </p>
+                        <p className="workspace-empty-help">
+                            Un espacio de trabajo es donde tu equipo comparte canales
+                            y conversaciones. Crea el primero para empezar.
+                        </p>
+                        <Link to="/workspaces/new" className="workspace-create-button">
+                            Crear un espacio de trabajo
+                        </Link>
+                    </div>
                 </div>
+                <footer className="workspace-card-footer">
+                    <p className="workspace-footer-help">
+                        ¿No puedes ver tu espacio de trabajo?{" "}
+                        <a href="#" className="workspace-footer-link">Prueba con otro correo electrónico</a>
+                    </p>
+                </footer>
             </div>
         )
     }
