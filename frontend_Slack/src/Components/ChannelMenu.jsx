@@ -84,6 +84,14 @@ export default function ChannelMenu({ can_manage }) {
         [menu_open]
     )
 
+    //Cerrar el menu desplegable si cambia el canal seleccionado
+    useEffect(
+        () => {
+            setMenuOpen(false)
+        },
+        [selected_channel?._id]
+    )
+
     if (!selected_channel) {
         return null
     }
@@ -103,7 +111,9 @@ export default function ChannelMenu({ can_manage }) {
 
             <button
                 type="button"
-                className="workspace-channel-icon-button"
+                className={
+                    `workspace-channel-icon-button${menu_open ? " channel-menu-trigger--open" : ""}`
+                }
                 title={
                     can_manage
                         ? "Más acciones"
@@ -152,6 +162,7 @@ export default function ChannelMenu({ can_manage }) {
                 edit_modal_open
                 &&
                 <ChannelFormModal
+                    key={selected_channel._id}
                     channel={selected_channel}
                     onClose={() => setEditModalOpen(false)}
                 />
@@ -161,6 +172,7 @@ export default function ChannelMenu({ can_manage }) {
                 delete_modal_open
                 &&
                 <DeleteChannelModal
+                    key={selected_channel._id}
                     channel={selected_channel}
                     onClose={() => setDeleteModalOpen(false)}
                 />

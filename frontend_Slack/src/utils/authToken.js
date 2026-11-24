@@ -29,3 +29,7 @@ export function getCurrentUser() {
         return null
     }
 }
+
+export function clearAuthToken() {
+    localStorage.removeItem("auth_token")
+}

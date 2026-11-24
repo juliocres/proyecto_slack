@@ -1,53 +1,24 @@
+import { useState } from "react"
 import { Link } from "react-router"
 import { useWorkspace } from "../../context/WorkspaceContext"
 import { useChannel } from "../../context/ChannelContext"
-import { getCurrentUser } from "../../utils/authToken"
+import { getAvatarColor, getInitial, getInitials } from "../../utils/avatar"
 import WorkspaceSidebar from "../../Components/WorkspaceSidebar"
 import ChannelMenu from "../../Components/ChannelMenu"
+import UserProfileMenu from "../../Components/UserProfileMenu"
+import UserProfilePanel from "../../Components/UserProfilePanel"
 import "./WorkspaceScreen.css"
 
-const AVATAR_COLORS = [
-    "#f5498d",
-    "#e8912d",
-    "#2eb67d",
-    "#36c5f0",
-    "#7c3aed",
-    "#e01e5a",
-    "#1264a3",
-    "#ecb22e",
-]
+const AVAILABILITY_STORAGE_KEY = "user_availability"
 
-function getInitial(nombre) {
-    return nombre?.trim()?.charAt(0).toUpperCase() || "?"
-}
-
-function getInitials(nombre) {
-    const words = nombre?.trim()?.split(/\s+/) ?? []
-
-    const initials = words
-        .slice(0, 2)
-        .map(word => word.charAt(0))
-        .join("")
-        .toUpperCase()
-
-    return initials || "WS"
-}
-
-function getAvatarColor(nombre) {
-    let hash = 0
-    const texto = nombre || ""
-
-    for (let i = 0; i < texto.length; i++) {
-        hash = (hash * 31 + texto.charCodeAt(i)) >>> 0
+function getInitialAvailability() {
+    try {
+        return localStorage.getItem(AVAILABILITY_STORAGE_KEY) !== "away"
     }
-
-    return AVATAR_COLORS[hash % AVATAR_COLORS.length]
+    catch {
+        return true
+    }
 }
-
-/*
-El nombre del usuario se guarda en el payload del JWT al iniciar sesion.
-Se decodifica solo para mostrar su inicial en la barra izquierda.
-*/
 
 /* --- Iconos de la barra fina de la izquierda --- */
 
@@ -143,9 +114,8 @@ function SendIcon() {
 
 /* --- Barra fina izquierda --- */
 
-function WorkspaceRail() {
+function WorkspaceRail({ is_available, onOpenProfile }) {
     const { workspace, workspace_loading } = useWorkspace()
-    const current_user = getCurrentUser()
 
     const workspace_name = workspace?.nombre
         || (workspace_loading ? "..." : "Workspace")
@@ -188,13 +158,10 @@ function WorkspaceRail() {
                 <PlusIcon />
             </button>
 
-            <span
-                className="workspace-rail-avatar"
-                style={{ backgroundColor: getAvatarColor(current_user?.name || current_user?.email) }}
-                title={current_user?.name || current_user?.email || "Usuario"}
-            >
-                {getInitial(current_user?.name || current_user?.email)}
-            </span>
+            <UserProfileMenu
+                is_available={is_available}
+                onOpenProfile={onOpenProfile}
+            />
 
         </nav>
     )
@@ -434,6 +401,27 @@ function WorkspaceScreen() {
 
     const { workspace, workspace_loading, workspace_error, reloadWorkspace } = useWorkspace()
 
+    const [profile_open, setProfileOpen] = useState(false)
+    const [is_available, setIsAvailable] = useState(getInitialAvailability)
+
+    function toggleAvailability() {
+        setIsAvailable(current => {
+            const next_value = !current
+
+            try {
+                localStorage.setItem(
+                    AVAILABILITY_STORAGE_KEY,
+                    next_value ? "available" : "away"
+                )
+            }
+            catch {
+                //Si el almacenamiento no esta disponible mantenemos el estado en memoria
+            }
+
+            return next_value
+        })
+    }
+
     if (workspace_error && !workspace) {
         return (
             <main className="workspace-screen workspace-screen--error">
@@ -453,7 +441,10 @@ function WorkspaceScreen() {
 
     return (
         <main className="workspace-screen">
-            <WorkspaceRail />
+            <WorkspaceRail
+                is_available={is_available}
+                onOpenProfile={() => setProfileOpen(true)}
+            />
             <WorkspaceSidebar />
 
             <section className="workspace-main" aria-label="Contenido del canal">
@@ -473,6 +464,16 @@ function WorkspaceScreen() {
                 </div>
                 <MessageComposer />
             </section>
+
+            {
+                profile_open
+                &&
+                <UserProfilePanel
+                    is_available={is_available}
+                    onToggleAvailability={toggleAvailability}
+                    onClose={() => setProfileOpen(false)}
+                />
+            }
         </main>
     )
 }

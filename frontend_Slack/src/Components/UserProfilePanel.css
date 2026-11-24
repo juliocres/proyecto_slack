@@ -1,0 +1,300 @@
+/* ============================================
+   UserProfilePanel: panel lateral derecho de
+   perfil del usuario (estilo Slack)
+   ============================================ */
+
+.user-profile-panel {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 340px;
+  min-width: 340px;
+  height: 100%;
+  border-left: 1px solid #ececec;
+  background-color: var(--color-white);
+  color: var(--color-text);
+}
+
+/* --- Encabezado --- */
+.user-profile-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 0 16px;
+  border-bottom: 1px solid #ececec;
+}
+
+.user-profile-panel-title {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.user-profile-panel-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.user-profile-panel-close:hover {
+  background-color: #f4f2f4;
+  color: var(--color-text);
+}
+
+/* --- Contenido scrolleable --- */
+.user-profile-panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 18px 24px;
+}
+
+.user-profile-panel-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.user-profile-panel-body::-webkit-scrollbar-thumb {
+  border: 2px solid var(--color-white);
+  border-radius: 8px;
+  background-color: #d0ccd1;
+}
+
+/* --- Avatar grande estilo Slack --- */
+.user-profile-panel-hero {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.user-profile-panel-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 210px;
+  height: 210px;
+  border-radius: 14px;
+  color: var(--color-text-on-primary);
+  font-size: 84px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  box-shadow: 0 6px 20px rgba(29, 28, 29, 0.14);
+  user-select: none;
+}
+
+/* --- Nombre y rol --- */
+.user-profile-panel-identity {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.user-profile-panel-name {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.user-profile-panel-role {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* --- Disponibilidad y reloj en vivo --- */
+.user-profile-panel-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.user-profile-panel-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-profile-panel-dot {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  margin: 0 2.5px;
+  border: 2px solid #616061;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.user-profile-panel-dot--online {
+  border-color: #2eb67d;
+  background-color: #2eb67d;
+}
+
+.user-profile-panel-meta-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  color: var(--color-text-muted);
+}
+
+.user-profile-panel-clock {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.user-profile-panel-meta-text {
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.user-profile-panel-timezone {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+/* --- Boton de disponibilidad --- */
+.user-profile-panel-actions {
+  margin-top: 16px;
+}
+
+.user-profile-panel-status-btn {
+  width: 100%;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: var(--color-white);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.user-profile-panel-status-btn:hover {
+  border-color: #b7b1b9;
+  background-color: #f8f6f9;
+}
+
+.user-profile-panel-divider {
+  height: 1px;
+  margin: 20px 0;
+  background-color: #ececec;
+}
+
+/* --- Informacion de contacto --- */
+.user-profile-panel-section-title {
+  margin: 0 0 14px;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.user-profile-panel-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+.user-profile-panel-info-item + .user-profile-panel-info-item {
+  margin-top: 14px;
+}
+
+.user-profile-panel-info-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background-color: #f4f2f5;
+  color: var(--color-text-muted);
+}
+
+.user-profile-panel-info-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.user-profile-panel-info-label {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.user-profile-panel-info-link,
+.user-profile-panel-info-value {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.user-profile-panel-info-link {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.user-profile-panel-info-link:hover {
+  text-decoration: underline;
+}
+
+.user-profile-panel-info-value {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* --- Responsive: sobrepuesto en pantallas medianas/chicas --- */
+@media (max-width: 1024px) {
+  .user-profile-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    max-width: 100vw;
+    box-shadow: -8px 0 30px rgba(29, 28, 29, 0.18);
+  }
+}
+
+@media (max-width: 480px) {
+  .user-profile-panel {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .user-profile-panel-avatar {
+    width: 160px;
+    height: 160px;
+    font-size: 64px;
+  }
+}

@@ -84,11 +84,20 @@ export function WorkspaceProvider({ children }) {
     El rol del usuario actual dentro del workspace sale de su membresia.
     Se usa, por ejemplo, para mostrar las acciones de administrar canales
     solo a owners/admins.
+    Se busca por user_id (y por email como respaldo) porque member_id es el
+    id de la membresia, no del usuario.
     */
     const members = members_response?.data?.members ?? []
     const current_user = getCurrentUser()
     const current_membership = members.find(
-        member => member.member_id === current_user?.id
+        member => (
+            (member.user_id && current_user?.id && String(member.user_id) === String(current_user.id))
+            || (
+                member.email
+                && current_user?.email
+                && member.email.toLowerCase() === current_user.email.toLowerCase()
+            )
+        )
     ) ?? null
     const current_role = current_membership?.member_rol ?? null
 
@@ -97,6 +106,7 @@ export function WorkspaceProvider({ children }) {
         workspace: workspace_response?.data?.workspace_selected ?? null,
         members: members,
         current_user: current_user,
+        current_membership: current_membership,
         current_role: current_role,
         loading,
         error,

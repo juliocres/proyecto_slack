@@ -7,6 +7,11 @@
   display: flex;
 }
 
+.channel-menu-trigger--open {
+  background-color: #f0ebf2;
+  color: var(--color-primary);
+}
+
 .channel-menu-dropdown {
   position: absolute;
   top: calc(100% + 6px);

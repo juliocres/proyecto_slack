@@ -172,7 +172,7 @@ export default function ChannelFormModal({ channel = null, onClose }) {
                                 ? <>Se va a {is_edit ? "guardar" : "crear"} como <strong>#{normalized_name}</strong>. </>
                                 : null
                         }
-                        Los nombres van en minúsculas, sin espacios ni puntos.
+                        Los nombres van en minúsculas y sin espacios.
                     </p>
 
                     <label className="channel-form-label" htmlFor="channel-form-description">
