@@ -1,4 +1,6 @@
+import { useState } from "react"
 import { useChannel } from "../context/ChannelContext"
+import ChannelFormModal from "./ChannelFormModal"
 import "./ChannelList.css"
 
 function ChevronDownIcon() {
@@ -56,8 +58,19 @@ export default function ChannelList() {
         reloadChannels
     } = useChannel()
 
+    const [create_modal_open, setCreateModalOpen] = useState(false)
+
+    function openCreateModal() {
+        setCreateModalOpen(true)
+    }
+
+    function closeCreateModal() {
+        setCreateModalOpen(false)
+    }
+
     return (
-        <section className="channel-list" aria-label="Canales del espacio de trabajo">
+        <>
+            <section className="channel-list" aria-label="Canales del espacio de trabajo">
 
             <header className="channel-list-header">
                 <span className="channel-list-title">
@@ -72,9 +85,9 @@ export default function ChannelList() {
                 <button
                     type="button"
                     className="channel-list-add"
-                    title="Crear canal (próximamente)"
+                    title="Crear canal"
                     aria-label="Crear canal"
-                    disabled
+                    onClick={openCreateModal}
                 >
                     <PlusIcon />
                 </button>
@@ -127,6 +140,13 @@ export default function ChannelList() {
                     <p className="channel-list-state-text">
                         Todavía no hay canales en este espacio de trabajo.
                     </p>
+                    <button
+                        type="button"
+                        className="channel-list-retry"
+                        onClick={openCreateModal}
+                    >
+                        Crear un canal
+                    </button>
                 </div>
             }
 
@@ -171,5 +191,12 @@ export default function ChannelList() {
             }
 
         </section>
+
+        {
+            create_modal_open
+            &&
+            <ChannelFormModal onClose={closeCreateModal} />
+        }
+        </>
     )
 }

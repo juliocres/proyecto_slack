@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect } from "react"
 import { useParams } from "react-router"
 import useRequest from "../hooks/useRequest"
 import { getWorkspaceById, getWorkspaceMembers } from "../services/workspaceService"
+import { getCurrentUser } from "../utils/authToken"
 
 /*
 Este contexto vive a nivel de la ruta /workspace/:workspace_id.
@@ -79,10 +80,24 @@ export function WorkspaceProvider({ children }) {
         ]
     )
 
+    /*
+    El rol del usuario actual dentro del workspace sale de su membresia.
+    Se usa, por ejemplo, para mostrar las acciones de administrar canales
+    solo a owners/admins.
+    */
+    const members = members_response?.data?.members ?? []
+    const current_user = getCurrentUser()
+    const current_membership = members.find(
+        member => member.member_id === current_user?.id
+    ) ?? null
+    const current_role = current_membership?.member_rol ?? null
+
     const value = {
         workspace_id,
         workspace: workspace_response?.data?.workspace_selected ?? null,
-        members: members_response?.data?.members ?? [],
+        members: members,
+        current_user: current_user,
+        current_role: current_role,
         loading,
         error,
         workspace_loading,

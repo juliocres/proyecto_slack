@@ -1,7 +1,9 @@
 import { Link } from "react-router"
 import { useWorkspace } from "../../context/WorkspaceContext"
 import { useChannel } from "../../context/ChannelContext"
+import { getCurrentUser } from "../../utils/authToken"
 import WorkspaceSidebar from "../../Components/WorkspaceSidebar"
+import ChannelMenu from "../../Components/ChannelMenu"
 import "./WorkspaceScreen.css"
 
 const AVATAR_COLORS = [
@@ -46,32 +48,6 @@ function getAvatarColor(nombre) {
 El nombre del usuario se guarda en el payload del JWT al iniciar sesion.
 Se decodifica solo para mostrar su inicial en la barra izquierda.
 */
-function getCurrentUser() {
-    try {
-        const auth_token = localStorage.getItem("auth_token")
-
-        if (!auth_token) {
-            return null
-        }
-
-        const payload = auth_token.split(".")[1]
-
-        if (!payload) {
-            return null
-        }
-
-        const base64 = payload.replace(/-/g, "+").replace(/_/g, "/")
-        const padded = base64.padEnd(
-            base64.length + (4 - (base64.length % 4)) % 4,
-            "="
-        )
-
-        return JSON.parse(atob(padded))
-    }
-    catch {
-        return null
-    }
-}
 
 /* --- Iconos de la barra fina de la izquierda --- */
 
@@ -227,10 +203,13 @@ function WorkspaceRail() {
 /* --- Encabezado del canal seleccionado --- */
 
 function ChannelHeader() {
-    const { members } = useWorkspace()
+    const { members, current_role } = useWorkspace()
     const { selected_channel } = useChannel()
 
     const channel_name = selected_channel?.nombre || "canal"
+
+    //Solo owners/admins pueden editar o eliminar canales (mismo criterio que el backend)
+    const can_manage_channel = current_role === "owner" || current_role === "admin"
 
     return (
         <header className="workspace-channel-header">
@@ -289,9 +268,7 @@ function ChannelHeader() {
                     <SearchIcon />
                 </button>
 
-                <button type="button" className="workspace-channel-icon-button" title="Más acciones (próximamente)" aria-label="Más acciones" disabled>
-                    <MoreIcon />
-                </button>
+                <ChannelMenu can_manage={can_manage_channel} />
 
             </div>
 

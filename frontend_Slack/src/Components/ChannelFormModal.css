@@ -1,0 +1,236 @@
+/* ============================================
+   ChannelFormModal: crear / editar un canal
+   (estilo Slack: fondo blanco, esquinas redondeadas)
+   ============================================ */
+
+.channel-form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background-color: rgba(24, 24, 24, 0.55);
+}
+
+.channel-form-modal {
+  width: 100%;
+  max-width: 520px;
+  padding: 26px 28px 24px;
+  border-radius: 12px;
+  background-color: var(--color-white);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+  color: var(--color-text);
+}
+
+/* --- Encabezado --- */
+.channel-form-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.channel-form-title {
+  flex: 1;
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+.channel-form-close {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px -6px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.channel-form-close:hover:not(:disabled) {
+  background-color: #f2f0f2;
+  color: var(--color-text);
+}
+
+.channel-form-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.channel-form-subtitle {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* --- Formulario --- */
+.channel-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.channel-form-label {
+  margin-bottom: 6px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.channel-form-optional {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+/* Campo del nombre con el '#' fijo */
+.channel-form-name-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-white);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.channel-form-name-field:focus-within {
+  border-color: #9a8b9d;
+  box-shadow: 0 0 0 1px #9a8b9d;
+}
+
+.channel-form-hash {
+  color: var(--color-text-muted);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.channel-form-input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 0;
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.channel-form-input::placeholder,
+.channel-form-textarea::placeholder {
+  color: #9a949b;
+}
+
+.channel-form-hint {
+  margin: 7px 0 16px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.channel-form-hint strong {
+  color: var(--color-text);
+}
+
+.channel-form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  outline: none;
+  background-color: var(--color-white);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.45;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.channel-form-textarea:focus {
+  border-color: #9a8b9d;
+  box-shadow: 0 0 0 1px #9a8b9d;
+}
+
+.channel-form-counter {
+  align-self: flex-end;
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+/* --- Error del backend --- */
+.channel-form-error {
+  margin-top: 14px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-error-border);
+  border-radius: 6px;
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* --- Botones --- */
+.channel-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.channel-form-button {
+  padding: 9px 18px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.channel-form-button--cancel {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  color: var(--color-text);
+}
+
+.channel-form-button--cancel:hover:not(:disabled) {
+  background-color: #f6f5f6;
+}
+
+.channel-form-button--submit {
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+}
+
+.channel-form-button--submit:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.channel-form-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* --- Responsive --- */
+@media (max-width: 520px) {
+  .channel-form-modal {
+    padding: 22px 18px 18px;
+  }
+
+  .channel-form-title {
+    font-size: 22px;
+  }
+}

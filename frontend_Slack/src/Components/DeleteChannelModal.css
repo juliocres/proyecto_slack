@@ -1,0 +1,107 @@
+/* ============================================
+   DeleteChannelModal: confirmar eliminacion
+   ============================================ */
+
+.delete-channel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background-color: rgba(24, 24, 24, 0.55);
+}
+
+.delete-channel-modal {
+  width: 100%;
+  max-width: 440px;
+  padding: 26px 28px 24px;
+  border-radius: 12px;
+  background-color: var(--color-white);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+  text-align: center;
+}
+
+.delete-channel-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+}
+
+.delete-channel-title {
+  margin: 14px 0 0;
+  color: var(--color-text);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.delete-channel-text {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.delete-channel-text strong {
+  color: var(--color-text);
+}
+
+.delete-channel-error {
+  margin-top: 14px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-error-border);
+  border-radius: 6px;
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.delete-channel-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.delete-channel-button {
+  padding: 9px 18px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.delete-channel-button--cancel {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  color: var(--color-text);
+}
+
+.delete-channel-button--cancel:hover:not(:disabled) {
+  background-color: #f6f5f6;
+}
+
+.delete-channel-button--confirm {
+  border: 1px solid var(--color-error-text);
+  background-color: var(--color-error-text);
+  color: var(--color-text-on-primary);
+}
+
+.delete-channel-button--confirm:hover:not(:disabled) {
+  background-color: #a01b30;
+}
+
+.delete-channel-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
