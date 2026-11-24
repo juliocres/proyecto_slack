@@ -9,6 +9,12 @@ class ChannelMessageRepository {
             .sort({ fecha_creacion: 1 })
         return result
     }
+
+    //Borrar todos los mensajes de un canal (se usa al eliminar el canal)
+    async deleteAllByChannelId(channel_id) {
+        const result = await ChannelMessage.deleteMany({ fk_id_canal: channel_id })
+        return result
+    }
 }
 const channelMessage_repository = new ChannelMessageRepository()
 export default channelMessage_repository

@@ -435,6 +435,23 @@ coincidan con el filtro.
                 },
             },
 
+            ChannelCreatedResponse: {
+                type: 'object',
+                required: ['ok', 'status', 'message', 'data'],
+                properties: {
+                    ok: { type: 'boolean', example: true },
+                    status: { type: 'integer', example: 201 },
+                    message: { type: 'string', example: 'Canal creado correctamente' },
+                    data: {
+                        type: 'object',
+                        required: ['channel_created'],
+                        properties: {
+                            channel_created: { $ref: '#/components/schemas/Channel' },
+                        },
+                    },
+                },
+            },
+
             ChannelDetailResponse: {
                 type: 'object',
                 required: ['ok', 'status', 'message', 'data'],
@@ -447,6 +464,40 @@ coincidan con el filtro.
                         required: ['channel_selected'],
                         properties: {
                             channel_selected: { $ref: '#/components/schemas/Channel' },
+                        },
+                    },
+                },
+            },
+
+            ChannelUpdatedResponse: {
+                type: 'object',
+                required: ['ok', 'status', 'message', 'data'],
+                properties: {
+                    ok: { type: 'boolean', example: true },
+                    status: { type: 'integer', example: 200 },
+                    message: { type: 'string', example: 'Canal actualizado correctamente' },
+                    data: {
+                        type: 'object',
+                        required: ['channel_updated'],
+                        properties: {
+                            channel_updated: { $ref: '#/components/schemas/Channel' },
+                        },
+                    },
+                },
+            },
+
+            ChannelDeletedResponse: {
+                type: 'object',
+                required: ['ok', 'status', 'message', 'data'],
+                properties: {
+                    ok: { type: 'boolean', example: true },
+                    status: { type: 'integer', example: 200 },
+                    message: { type: 'string', example: 'Canal eliminado correctamente' },
+                    data: {
+                        type: 'object',
+                        required: ['channel_deleted'],
+                        properties: {
+                            channel_deleted: { $ref: '#/components/schemas/Channel' },
                         },
                     },
                 },

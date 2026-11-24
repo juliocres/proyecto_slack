@@ -35,6 +35,19 @@ class ChannelRepository {
         const result = await Channel.find({ fk_id_espacio_trabajo: workspace_id })
         return result
     }
+    async getByNameAndWorkspace(name, workspace_id, exclude_channel_id = null) {
+        const filter = {
+            nombre: name,
+            fk_id_espacio_trabajo: workspace_id
+        }
+
+        //Al editar, el propio canal no cuenta como duplicado
+        if (exclude_channel_id) {
+            filter._id = { $ne: exclude_channel_id }
+        }
+
+        return await Channel.findOne(filter)
+    }
 }
 const channel_repository = new ChannelRepository()
 export default channel_repository
