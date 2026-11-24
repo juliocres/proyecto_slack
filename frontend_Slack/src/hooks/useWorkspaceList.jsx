@@ -22,7 +22,7 @@ function useWorkspaceList() {
         console.log('[useWorkspaceList] error:', error)
         console.log('[useWorkspaceList] response:', response)
     },
-    [loading, error, response]
+    [loading, error, response]                        
     )
     function reloadWorkspaces(){
         sendRequest(

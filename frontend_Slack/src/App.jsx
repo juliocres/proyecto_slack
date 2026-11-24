@@ -11,6 +11,7 @@ import ForgotPasswordScreen from './screens/ForgotPasswordScreen/ForgotPasswordS
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen'
 import AuthMiddleware from './Middlewares/AuthMiddleware'
 import { WorkspaceProvider } from './context/WorkspaceContext'
+import { ChannelProvider } from './context/ChannelContext'
 
 const App = () => {
   return (
@@ -27,7 +28,9 @@ const App = () => {
           path='/workspace/:workspace_id'
           element={
             <WorkspaceProvider>
-              <WorkspaceScreen/>
+              <ChannelProvider>
+                <WorkspaceScreen/>
+              </ChannelProvider>
             </WorkspaceProvider>
           }
         />

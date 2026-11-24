@@ -1,0 +1,196 @@
+/* ============================================
+   WorkspaceSidebar: barra lateral morada estilo Slack
+   ============================================ */
+
+.workspace-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  min-width: 300px;
+  min-height: 0;
+  background-color: #3f0e40;
+  color: var(--color-text-on-primary);
+}
+
+/* --- Encabezado con el nombre del workspace --- */
+.workspace-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 12px 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.workspace-sidebar-name-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 2px 4px;
+  border: 0;
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--color-text-on-primary);
+  font-family: inherit;
+  cursor: default;
+}
+
+.workspace-sidebar-name {
+  max-width: 180px;
+  overflow: hidden;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.workspace-sidebar-header-actions {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.workspace-sidebar-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+}
+
+.workspace-sidebar-icon-button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-on-primary);
+}
+
+.workspace-sidebar-icon-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* --- Botón "Cambiar de plan" --- */
+.workspace-sidebar-plan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 12px 12px 10px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--color-text-on-primary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.workspace-sidebar-plan:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* --- Buscador (visual, la búsqueda todavía no está implementada) --- */
+.workspace-sidebar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 12px 8px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 13px;
+}
+
+.workspace-sidebar-search svg {
+  flex-shrink: 0;
+}
+
+.workspace-sidebar-search span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* --- Navegación secundaria --- */
+.workspace-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 2px 8px;
+}
+
+.workspace-sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.workspace-sidebar-nav-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.workspace-sidebar-divider {
+  margin: 8px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* --- Pie --- */
+.workspace-sidebar-footer {
+  padding: 8px 16px 12px;
+}
+
+.workspace-sidebar-footer p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .workspace-sidebar {
+    width: 260px;
+    min-width: 260px;
+  }
+
+  .workspace-sidebar-name {
+    max-width: 140px;
+  }
+}
+
+@media (max-width: 680px) {
+  .workspace-sidebar {
+    width: 220px;
+    min-width: 220px;
+  }
+
+  .workspace-sidebar-name {
+    max-width: 105px;
+    font-size: 16px;
+  }
+
+  .workspace-sidebar-nav {
+    display: none;
+  }
+}
