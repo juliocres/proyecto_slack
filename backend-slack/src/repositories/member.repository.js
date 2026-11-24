@@ -88,6 +88,7 @@ class MemberRepository {
     formato:
         {
             member_id,
+            user_id,
             nombre,
             email,
             member_rol,
@@ -108,6 +109,7 @@ class MemberRepository {
             membership => {
                 return {
                     member_id: membership._id,
+                    user_id: membership.fk_id_usuario._id,
                     nombre: membership.fk_id_usuario.nombre,
                     email: membership.fk_id_usuario.email,
                     member_rol: membership.rol,

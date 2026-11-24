@@ -6,7 +6,6 @@ function authMiddleware (request, response, next){
     try{
 
         const auth_header = request.headers.authorization 
-        console.log('[AUTH TEMP DEBUG] ua=', request.headers['user-agent']?.slice(0, 30), 'header=', JSON.stringify(auth_header), 'secret_len=', ENVIRONMENT.JWT_SECRET?.length)
         if(!auth_header){
             throw new ServerError('Auth header is requered', 400)
         }
@@ -27,7 +26,6 @@ function authMiddleware (request, response, next){
         next()
     }
     catch(error){
-        console.log('[AUTH TEMP DEBUG ERROR]', error.name, error.message)
         //Si hubo algun fallo al verificar el token
         if(
             error instanceof jwt.JsonWebTokenError //Falla verificacion o esta mal escrito

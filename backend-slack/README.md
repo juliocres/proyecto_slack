@@ -17,7 +17,8 @@ Permite:
 - Restablecer la contrasena por email.
 - Crear y administrar espacios de trabajo (workspaces).
 - Gestionar miembros mediante invitaciones por email y roles.
-- Consultar los canales de cada workspace y su historial de mensajes.
+- Crear, consultar, editar y eliminar los canales de cada workspace, y consultar
+  su historial de mensajes.
 - Registrar cada consulta HTTP recibida, guardando el body de las operaciones
   de escritura cifrado con `LOGGER_PRIVATE_KEY`.
 
@@ -29,14 +30,13 @@ Permite:
 | Usuarios (listado, detalle y baja de la propia cuenta) | Implementado |
 | Workspaces (listado, alta, detalle, edicion y baja) | Implementado |
 | Miembros (invitacion, aceptacion y expulsion) | Implementado |
-| Canales (listado y detalle) | Implementado |
+| Canales (listado, alta, detalle, edicion y baja) | Implementado |
 | Mensajes de canal (solo lectura del historial) | Implementado |
 | Registro de consultas con body cifrado | Implementado |
 | Documentacion OpenAPI / Swagger UI | Implementado |
 
 ### Fuera del alcance actual
 
-- Crear, editar o eliminar canales.
 - Enviar, editar o eliminar mensajes (solo se consultan los existentes).
 - Mensajes directos (existe `directMessage.model.js`, pero esta vacio).
 - Paginacion en los listados: devuelven todos los documentos que coinciden.
@@ -173,9 +173,9 @@ minutos respectivamente).
 
 | Rol | Permisos |
 | --- | --- |
-| `owner` | Todo: editar y eliminar el workspace, invitar y expulsar miembros |
-| `admin` | Editar el workspace, invitar y expulsar miembros |
-| `user` | Consultar el workspace, sus miembros, canales y mensajes |
+| `owner` | Todo: editar y eliminar el workspace, invitar y expulsar miembros, editar y eliminar canales |
+| `admin` | Editar el workspace, invitar y expulsar miembros, editar y eliminar canales |
+| `user` | Consultar el workspace, sus miembros, canales y mensajes; crear canales |
 
 El `owner` se asigna automaticamente al crear el workspace. No se puede invitar
 a un usuario directamente como `owner` ni expulsar al `owner`.
@@ -249,8 +249,11 @@ Leyenda de acceso:
 | 17 | `GET` | `/api/workspaces/{workspace_id}/members/accept-invite/{invitation_token}` | Publico |
 | 18 | `DELETE` | `/api/workspaces/{workspace_id}/members/{member_id}` | Owner/Admin |
 | 19 | `GET` | `/api/workspaces/{workspace_id}/channels` | Miembro |
-| 20 | `GET` | `/api/workspaces/{workspace_id}/channels/{channel_id}` | Miembro |
-| 21 | `GET` | `/api/workspaces/{workspace_id}/channels/{channel_id}/messages` | Miembro |
+| 20 | `POST` | `/api/workspaces/{workspace_id}/channels` | Miembro |
+| 21 | `GET` | `/api/workspaces/{workspace_id}/channels/{channel_id}` | Miembro |
+| 22 | `PUT` | `/api/workspaces/{workspace_id}/channels/{channel_id}` | Owner/Admin |
+| 23 | `DELETE` | `/api/workspaces/{workspace_id}/channels/{channel_id}` | Owner/Admin |
+| 24 | `GET` | `/api/workspaces/{workspace_id}/channels/{channel_id}/messages` | Miembro |
 
 ---
 
@@ -709,8 +712,9 @@ workspace o membresia no encontrada.
 
 ### 6.5 Channels
 
-Todos los endpoints de canales requieren ser miembro del workspace (cualquier
-rol).
+Listar, crear, consultar canales y leer mensajes requieren ser miembro del
+workspace (cualquier rol). Editar y eliminar canales requieren rol `owner` o
+`admin`.
 
 #### 19. `GET /api/workspaces/{workspace_id}/channels`
 
@@ -729,7 +733,30 @@ Respuesta `200`:
 }
 ```
 
-#### 20. `GET /api/workspaces/{workspace_id}/channels/{channel_id}`
+#### 20. `POST /api/workspaces/{workspace_id}/channels`
+
+Crea un canal dentro del workspace. El nombre se normaliza al estilo Slack
+(sin `#` inicial, espacios reemplazados por `-` y en minusculas) y no puede
+repetirse dentro del mismo workspace.
+
+Body: `{ "name": "proyecto-final", "description": "Coordinacion del proyecto" }` (`description` es opcional).
+
+Respuesta `201`:
+
+```json
+{
+  "ok": true,
+  "status": 201,
+  "message": "Canal creado correctamente",
+  "data": {
+    "channel_created": {}
+  }
+}
+```
+
+Errores: `400` datos invalidos, `403` no es miembro, `404` workspace no encontrado, `409` nombre duplicado.
+
+#### 21. `GET /api/workspaces/{workspace_id}/channels/{channel_id}`
 
 Devuelve un canal en particular. Si el canal no existe o pertenece a otro
 workspace responde `404 Canal no encontrado` (no revela la existencia de canales
@@ -748,7 +775,47 @@ Respuesta `200`:
 }
 ```
 
-#### 21. `GET /api/workspaces/{workspace_id}/channels/{channel_id}/messages`
+#### 22. `PUT /api/workspaces/{workspace_id}/channels/{channel_id}`
+
+Edita el nombre y la descripcion de un canal. Requiere rol `owner` o `admin`.
+
+Body: `{ "name": "nuevo-nombre", "description": "Nueva descripcion" }` (`description` es opcional).
+
+Respuesta `200`:
+
+```json
+{
+  "ok": true,
+  "status": 200,
+  "message": "Canal actualizado correctamente",
+  "data": {
+    "channel_updated": {}
+  }
+}
+```
+
+Errores: `400` datos invalidos, `403` no es miembro o rol insuficiente, `404` workspace o canal no encontrado, `409` nombre duplicado.
+
+#### 23. `DELETE /api/workspaces/{workspace_id}/channels/{channel_id}`
+
+Elimina un canal y todos sus mensajes. Requiere rol `owner` o `admin`.
+
+Respuesta `200`:
+
+```json
+{
+  "ok": true,
+  "status": 200,
+  "message": "Canal eliminado correctamente",
+  "data": {
+    "channel_deleted": {}
+  }
+}
+```
+
+Errores: `403` no es miembro o rol insuficiente, `404` workspace o canal no encontrado.
+
+#### 24. `GET /api/workspaces/{workspace_id}/channels/{channel_id}/messages`
 
 Devuelve el historial completo del canal, ordenado del mas viejo al mas nuevo y
 con el autor populado (`nombre` y `email`).
@@ -864,7 +931,7 @@ console.log(body)
 ## 9. Proximos pasos sugeridos
 
 1. Excluir `password` de las respuestas de usuarios.
-2. Implementar creacion de canales y envio de mensajes.
+2. Implementar envio, edicion y eliminacion de mensajes.
 3. Agregar paginacion a los listados.
 4. Agregar expiracion y refresh token para las sesiones.
 5. Incorporar validacion de esquemas de entrada y rate limiting.

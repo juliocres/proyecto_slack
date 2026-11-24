@@ -601,6 +601,7 @@ coincidan con el filtro.
                     'Forma "mapeada" de una membresia con los datos del usuario populados.',
                 properties: {
                     member_id: { type: 'string', example: '6ab0c1d2e3f4a5b6c7d8e9f1' },
+                    user_id: { type: 'string', example: '6aabff9a190ff6061955c889' },
                     nombre: { type: 'string', example: 'maria' },
                     email: { type: 'string', format: 'email', example: 'maria@mail.com' },
                     member_rol: {
